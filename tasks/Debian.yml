@@ -1,0 +1,131 @@
+---
+# tasks file for apache-php
+
+- name: Install Ondrej Apache2 PPA Repository
+  apt_repository:
+    repo: 'ppa:ondrej/apache2'
+
+- name: Install Ondrej PHP PPA Repository
+  apt_repository:
+    repo: 'ppa:ondrej/php'
+
+- name: Install Apache2, PHP-FPM and LetsEncrypt Packages
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - apache2
+    - php{{ php_version }}-mbstring
+    - php{{ php_version }}-mysql
+    - php{{ php_version }}-xml
+    - php{{ php_version }}-zip
+    - php{{ php_version }}-gd
+    - php{{ php_version }}-curl
+    - php{{ php_version }}-bz2
+    - php{{ php_version }}-fpm
+    - php{{ php_version }}-intl
+    - php{{ php_version }}-json
+    - php-apcu
+
+- name: Enabling Apache2 modules
+  apache2_module: name={{ item }} state=present
+  with_items:
+    - proxy_fcgi
+    - setenvif
+    - headers
+    - rewrite
+    - deflate
+    - http2
+
+- name: Disabling Apache2 indexes modules
+  apache2_module: name={{ item }} state=absent force=true
+  with_items:
+    - autoindex
+
+- name: Configure Apache2 basic security (ServerTokens)
+  lineinfile:
+    path: /etc/apache2/conf-available/security.conf
+    regexp: '^ServerTokens'
+    line: 'ServerTokens prod'
+  notify:
+    - restart apache
+
+- name: Configure Apache2 basic security (ServerSignature)
+  lineinfile:
+    path: /etc/apache2/conf-available/security.conf
+    regexp: '^ServerSignature'
+    line: 'ServerSignature Off'
+  notify:
+    - restart apache
+
+- name: Remove default Apache site directory
+  file:
+    state: absent
+    path: /var/www/html
+
+- name: Create new Apache site directory
+  file:
+    path: /var/www/default_site
+    state: directory
+    mode: 0755
+
+- name: Create new Apache site directory index.html
+  file:
+    path: /var/www/default_site/index.html
+    state: touch
+    mode: 0755
+
+- name: Patching default non-ssl vhost
+  lineinfile:
+    path: /etc/apache2/sites-available/000-default.conf
+    regexp: '\t*DocumentRoot'
+    line: 'DocumentRoot /var/www/default_site'
+  notify:
+    - restart apache
+
+- name: Patching default ssl vhost
+  lineinfile:
+    path: /etc/apache2/sites-available/default-ssl.conf
+    regexp: '\t*DocumentRoot'
+    line: 'DocumentRoot /var/www/default_site'
+  notify:
+    - restart apache
+
+- name: Patching default non-ssl vhost (admin email)
+  lineinfile:
+    path: /etc/apache2/sites-available/000-default.conf
+    regexp: '\t*ServerAdmin'
+    line: 'ServerAdmin {{ customeradmin }}'
+  notify:
+    - restart apache
+
+- name: Patching default ssl vhost (admin email)
+  lineinfile:
+    path: /etc/apache2/sites-available/default-ssl.conf
+    regexp: '\t*ServerAdmin'
+    line: 'ServerAdmin {{ customeradmin }}'
+  notify:
+    - restart apache
+
+- name: Sending the php.ini configuration file (FPM)
+  template:
+    src: php.ini.j2
+    dest: /etc/php/{{ php_version }}/fpm/php.ini
+  notify:
+    - restart php-fpm
+
+- name: Sending the php.ini configuration file (CLI)
+  template:
+    src: php.ini.j2
+    dest: /etc/php/{{ php_version }}/cli/php.ini
+  notify:
+    - restart php-fpm
+
+- name: Creating websites directory /var/www/custs
+  file:
+    path: /var/www/custs
+    state: directory
+
+- name: Creating home symlink to /var/www/custs
+  file:
+    src: /var/www
+    dest: /home/{{ customerid }}/my_websites
+    state: link
