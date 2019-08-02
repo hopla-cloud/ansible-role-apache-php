@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: apache_php
   author: hopla-cloud
   description: Hopla.cloud role for ansible to deploy Apache and PHP (FPM)
   company: hopla.cloud
