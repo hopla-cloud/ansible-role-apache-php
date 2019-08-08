@@ -1,5 +1,5 @@
 ---
-# tasks file for apache-php
+# tasks file for hoplacloud.apache_php
 
 - name: Install Ondrej Apache2 PPA Repository
   apt_repository:
@@ -89,19 +89,19 @@
   notify:
     - restart apache
 
-- name: Patching default non-ssl vhost (admin email)
+- name: Patching default non-ssl vhost (user email)
   lineinfile:
     path: /etc/apache2/sites-available/000-default.conf
     regexp: '\t*ServerAdmin'
-    line: 'ServerAdmin {{ customeradmin }}'
+    line: 'ServerAdmin {{ user_email }}'
   notify:
     - restart apache
 
-- name: Patching default ssl vhost (admin email)
+- name: Patching default ssl vhost (user email)
   lineinfile:
     path: /etc/apache2/sites-available/default-ssl.conf
     regexp: '\t*ServerAdmin'
-    line: 'ServerAdmin {{ customeradmin }}'
+    line: 'ServerAdmin {{ user_email }}'
   notify:
     - restart apache
 
@@ -127,5 +127,5 @@
 - name: Creating home symlink to /var/www/custs
   file:
     src: /var/www
-    dest: /home/{{ customerid }}/my_websites
+    dest: /home/{{ user_name }}/my_websites
     state: link

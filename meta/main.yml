@@ -6,7 +6,7 @@ galaxy_info:
 
   license: GPLv3
 
-  min_ansible_version: 2.7
+  min_ansible_version: 2.5
 
   platforms:
     - name: Ubuntu
@@ -19,4 +19,6 @@ galaxy_info:
     - php
     - fpm
 
-dependencies: []
+dependencies:
+    - hoplacloud.linux_update
+    - hoplacloud.linux_motd

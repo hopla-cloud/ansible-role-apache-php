@@ -1,37 +1,52 @@
 Role Name
 =========
 
-Hopla.cloud role for ansible to deploy Apache and PHP (FPM)
+Hopla.cloud role for ansible to apache2, php-fpm, Memcached.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+System variables
+user_name: "user"
+user_email: "user@example.com"
+
+Php variables
+- php_version: "7.3"
+(Possible : 5.6 7.0 7.1 7.2 7.3)
+- post_max_size: "64M"
+- upload_max_filesize: "64M"
+- short_open_tag: "On"
+
+Memcached variables
+- session_save_handler: "files"
+- session_save_path: "/var/lib/php/sessions"
 
 Dependencies
 ------------
+
+- hoplacloud.linux_update
+- hoplacloud.linux_motd
 
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
+    - hosts: localhost
+      remote_user: root
       roles:
-         - hopla.cloud.apache-php
+         - hoplacloud.apache_php
 
 License
 -------
 
-BSD
+GPLv3
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+This role was created in 2019 by [hopla.cloud](https://hopla.cloud)

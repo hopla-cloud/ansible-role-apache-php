@@ -1,5 +1,5 @@
 ---
-# handlers file for apache-php
+# handlers file for hoplacloud.apache_php
 
 - name: restart apache
   service: name=apache2 state=restarted
