@@ -18,7 +18,14 @@ galaxy_info:
     - apache
     - php
     - fpm
+    - ftp
 
 dependencies:
     - hoplacloud.linux_update
     - hoplacloud.linux_motd
+    - hoplacloud.fail2ban
+    - hoplacloud.proftpd
+    - hoplacloud.postfix
+    - hoplacloud.git
+    - hoplacloud.letsencrypt
+    - hoplacloud.vhostdeploy_nginx

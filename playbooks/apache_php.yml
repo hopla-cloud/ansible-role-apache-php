@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  vars:
+    user_name: ubuntu
+  remote_user: root
+  pre_tasks:
+    - name: Set fact for server_type (apache)
+      set_fact:
+        server_type: apache
+        cacheable: yes
+  roles:
+    - hoplacloud.vhostdeploy_apache
