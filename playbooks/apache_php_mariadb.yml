@@ -13,5 +13,5 @@
         server_type: apache
         cacheable: yes
   roles:
-    - hoplacloud.vhostdeploy_apache
+    - hoplacloud.apache_php
     - geerlingguy.mysql
