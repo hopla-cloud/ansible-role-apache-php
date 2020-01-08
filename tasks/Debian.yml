@@ -119,12 +119,12 @@
   notify:
     - restart php-fpm
 
-- name: Creating websites directory /var/www/custs
+- name: Creating websites directory /var/www/sites
   file:
-    path: /var/www/custs
+    path: /var/www/sites
     state: directory
 
-- name: Creating home symlink to /var/www/custs
+- name: Creating home symlink to /var/www/sites
   file:
     src: /var/www
     dest: /home/{{ user_name }}/my_websites
