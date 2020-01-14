@@ -168,5 +168,5 @@
   when: not composer_bin.stat.exists
 
 - name: Run Composer installer.
-  command: php composer_installer.php --install-dir=/usr/local/bin --filename=composer
+  command: php /tmp/composer_installer.php --install-dir=/usr/local/bin --filename=composer
   when: not composer_bin.stat.exists
