@@ -105,6 +105,23 @@
   notify:
     - restart apache
 
+- name: Ensure the vhost_deploy directory is present
+  file:
+    path: /usr/src/vhost_deploy_apache
+    state: directory
+
+- name: Sending vhost_deploy_apache file
+  template:
+    src: vhost_deploy.sh.j2
+    dest: /usr/src/vhost_deploy_apache/vhost_deploy.sh
+    mode: '0755'
+
+- name: Creating symlink for vhost_deploy.sh script
+  file:
+    src: /usr/src/vhost_deploy_apache/vhost_deploy.sh
+    dest: /usr/local/sbin/vhost_deploy
+    state: link
+
 - name: Sending the php.ini configuration file (FPM)
   template:
     src: php.ini.j2
