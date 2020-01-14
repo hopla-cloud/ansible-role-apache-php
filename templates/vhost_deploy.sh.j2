@@ -25,7 +25,7 @@ apacheConfPrefix="/etc/apache2"
 sitesPathPrefix="/var/www/sites"
 
 # PHP-FPM Configuration (5.6, 7.0, 7.1, 7.2, 7.3)
-phpfpmDaemonName="{{ php_version }}"
+phpfpmDaemonName="php{{ php_version }}-fpm"
 phpfpmPoolPrefix="/etc/php/{{ php_version }}/fpm/pool.d"
 
 # FTP Configuration
