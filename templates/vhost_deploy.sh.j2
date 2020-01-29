@@ -168,7 +168,12 @@ Protocols h2 h2c http/1.1
 DocumentRoot ${sitesPathPrefix}/$1/$2
 
 # PHP-FPM Proxy
-ProxyPassMatch ^/(.*\.php(/.*)?)$ unix:/var/run/php/$phpfpmDaemonName-$1_$2.sock|fcgi://127.0.0.1:9000${sitesPathPrefix}/$1/$2
+
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
+<FilesMatch \.php$>
+     SetHandler "proxy:unix:/var/run/php/$phpfpmDaemonName-$1_$2.sock|fcgi://localhost/"
+</FilesMatch>
 
 <Directory "${sitesPathPrefix}/$1/$2">
 AllowOverride All
