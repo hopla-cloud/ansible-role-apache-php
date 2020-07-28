@@ -15,11 +15,12 @@
 
 # Set env vars
 export HOME=/root
-
 # Set current date
 currdate=$(date +%F)
 
 # Install ansible
+# For ubuntu 18.04
+DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:ansible/ansible
 apt update
 DEBIAN_FRONTEND=noninteractive apt install ansible -y --allow-yes true
 
