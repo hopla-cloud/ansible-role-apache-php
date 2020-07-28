@@ -28,15 +28,14 @@
     update_cache: yes
 
 - name: Enabling Apache2 modules
-  apache2_module:
-    name:
-      - proxy_fcgi
-      - setenvif
-      - headers
-      - rewrite
-      - deflate
-      - http2
-    state: present
+  apache2_module: name={{ item }} state=present
+  with_items:
+    - proxy_fcgi
+    - setenvif
+    - headers
+    - rewrite
+    - deflate
+    - http2
 
 - name: Disabling Apache2 indexes modules
   apache2_module:
