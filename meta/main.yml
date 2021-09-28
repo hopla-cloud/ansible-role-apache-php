@@ -25,6 +25,5 @@ dependencies:
     - hoplacloud.linux_motd
     - hoplacloud.fail2ban
     - hoplacloud.proftpd
-    - hoplacloud.postfix
     - hoplacloud.git
     - hoplacloud.letsencrypt
