@@ -160,6 +160,7 @@ cat > ${apacheConfPrefix}/sites-available/$1_$2.conf << EOF
 # <VirtualHost *:443>
 
 ServerName $2.$1
+ServerAlias $1
 ServerAdmin $adminEmail
 
 Protocols h2 h2c http/1.1
